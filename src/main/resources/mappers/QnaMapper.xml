@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<!-- 여기서는 세미콜론 찍지 않음 -->
+  <mapper namespace="QnaMapper">
+  
+  <resultMap type="java.util.HashMap" id="myMap"></resultMap>
+  
+	<insert id="write" statementType="CALLABLE" parameterType="java.util.Map">
+		<!--DTO를 map에 담아보내줌  -->
+		<!-- 프로시저 호출  -->
+		{ call qna_write (#{qnaDTO.writer, mode=IN}, #{qnaDTO.title, mode=IN}, #{qnaDTO.contents, mode=IN}, #{result, mode=OUT, javaType=int, jdbcType=INTEGER})}
+	</insert>  	
+	<update id="update" statementType="CALLABLE" parameterType="com.choa.qna.QnaDTO">
+		{ call qna_update (#{num, mode=IN}, #{title, mode=IN}, #{contents, mode=IN}, #{result, mode=OUT, javaType=int, jdbcType=INTEGER})}
+	</update>
+	<insert id="reply" statementType="CALLABLE" parameterType="java.util.Map">
+		{ call qna_reply (#{qnaDTO.num, mode=IN}, #{qnaDTO.writer, mode=IN}, #{qnaDTO.title, mode=IN}, #{qnaDTO.contents, mode=IN}, #{result, mode=OUT, javaType=int, jdbcType=INTEGER})}
+	</insert>
+  </mapper>
