@@ -5,11 +5,23 @@
 	<!-- 여기서는 세미콜론 찍지 않음 -->
   <mapper namespace="QnaMapper">
   
-  <resultMap type="java.util.HashMap" id="myMap"></resultMap>
+  <resultMap type="com.choa.qna.QnaDTO" id="myQNA">
+  	
+  </resultMap>
+  	
+  	<select id="list" statementType="CALLABLE" parameterType="java.util.Map">
+  		{call qna_list (#{start, mode=IN}, #{last, mode=IN}, #{qna, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=myQNA})}
+  	</select>
+  	
+  	<select id="view" statementType="CALLABLE" parameterType="java.util.Map">
+  	<!-- 프로시저 호출할 때에는 파라미터 타입을 Map으로 설정하는 것이 편함 -->
+  		{call qna_view (#{num, mode=IN}, #{qna, mode=OUT, jdbcType=CURSOR, javaType=java.sql.ResultSet, resultMap=myQNA})}
+  		<!-- cursor: 여러개를 하나에 담는 것 / resultMap 꼭 명시해줄 것.-->
+  	</select>
   
-	<insert id="write" statementType="CALLABLE" parameterType="java.util.Map">
-		<!--DTO를 map에 담아보내줌  -->
-		<!-- 프로시저 호출  -->
+	<!-- <insert id="write" statementType="CALLABLE" parameterType="java.util.Map">
+		DTO를 map에 담아보내줌 
+		프로시저 호출 
 		{ call qna_write (#{qnaDTO.writer, mode=IN}, #{qnaDTO.title, mode=IN}, #{qnaDTO.contents, mode=IN}, #{result, mode=OUT, javaType=int, jdbcType=INTEGER})}
 	</insert>  	
 	<update id="update" statementType="CALLABLE" parameterType="com.choa.qna.QnaDTO">
@@ -17,5 +29,5 @@
 	</update>
 	<insert id="reply" statementType="CALLABLE" parameterType="java.util.Map">
 		{ call qna_reply (#{qnaDTO.num, mode=IN}, #{qnaDTO.writer, mode=IN}, #{qnaDTO.title, mode=IN}, #{qnaDTO.contents, mode=IN}, #{result, mode=OUT, javaType=int, jdbcType=INTEGER})}
-	</insert>
+	</insert> -->
   </mapper>
